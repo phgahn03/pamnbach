@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gửi Nỡm Iu Của Em</title> <!-- 🌸 Gửi Nỡm Iu-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      overflow: hidden;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* 🌟 Ngôi sao nền nhấp nháy */
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.8; }
+    }
+
+    /* ⬇️ Chữ và trái tim rơi */
+    .falling {
+      position: absolute;
+      top: -50px;
+      will-change: transform, opacity;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    /* ✨ Hiệu ứng chữ rơi */
+    .glow-text {
+  color: #FFB4BC;
+  font-size: 16px;
+  text-shadow: 0 0 6px #ffa6ad, 0 0 10px #ffcdd2;
+  max-width: 90vw;
+  white-space: normal;
+}
+
+
+    /* 💖 Trái tim rơi */
+    .heart {
+      position: absolute;
+      color: pink;
+      font-size: 15px;
+      pointer-events: none;
+      will-change: transform, opacity;
+      animation: fall linear forwards;
+    }
+
+    /* 🔘 Nút bấm */
+    #playButton {
+      position: fixed;
+      left: 50%;
+      top: 52%;
+      transform: translateX(-50%);
+      padding: 12px 28px;
+      font-size: 18px;
+      background: #ff69b4;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff69b4;
+      user-select: none;
+    }
+
+    /* 📢 Hướng dẫn */
+    #instructionText {
+      position: fixed;
+      top: 46%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ffb6c1;
+      font-size: 20px;
+      text-shadow: 0 0 10px #ff69b4;
+      user-select: none;
+    }
+
+    /* 🎧 Audio ẩn */
+    .audio-player {
+      position: fixed;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+#letter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff; /* ❄️ TRẮNG TINH NHƯ BẠCH TUYẾT */
+  color: #ff1493;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 80vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px #ff69b4;
+  font-size: 18px;
+  line-height: 1.6;
+  z-index: 999;
+  display: none;
+  animation: fadeIn 2s ease-in forwards;
+}
+.letter-content {
+  text-align: left;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+#letter::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(5px);
+  z-index: -1;
+}
+
+  </style>
+
+</head>
+<body>
+
+  <!-- 🎼 Nhạc -->
+  <audio id="audio" loop>
+    <source src="https://files.catbox.moe/jqppji.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- 📢 Hướng dẫn -->
+  <div id="instructionText">Hãy bấm vào nút dưới đây</div>
+
+  <!-- 🔘 Nút Play -->
+  <button id="playButton">Play</button>
+
+  <script>
+    // 💬 Chữ rơi (thay ở đây)
+    const textLines = [
+      "Em thực sự cảm thấy rất hạnh phúc khi được gặp anh",
+      "Cảm ơn anh vì đã luôn yêu thương em",
+      "Cảm ơn anh vì đã đồng hành cùng em trong một thời gian dài",
+      "Em yêu anh rất nhiều",
+      "Em thương anh rất rất rất nhiều",
+      "Em yêu anh", // Dòng ở giữa
+      "Mong rằng em sẽ luôn mạnh khỏe và hạnh phúc cùng em như bây giờ",
+      "Em sẽ luôn làm anh hạnh phúc",
+      "em pam iu pô",
+      "Em sẽ luôn yêu anh với trái tim tràn đầy tình thương và nhiệt huyết như bây giờ",
+      "Phương Anh yêu Hoàng Bách rất rất nhìuu",
+      "Em xin lỗi vì đã đôi khi nóng giận với anh",
+      "Nhưng thực sự em rất yêu anh đó",
+      "Cho dù đôi khi hai ta làm nhau đau nhưng thật may vì cả hai đã chọn ở lại và tiếp tục cố gắng",
+      "Em thực lòng mong rằng sau này em sẽ là người đứng cạnh anh trên lễ đường",
+      "Cảm ơn anh vì đã đến bên em",
+
+    ];
+
+    // 💘 Trái tim
+    const hearts = ["💗", "💓", "💖", "💞", "💝", "❤️", "💕"];
+    const usedLefts = [];
+
+    // 📍 Vị trí rơi không trùng nhau
+    function getUniqueLeft() {
+      let left, attempts = 0;
+      do {
+        left = Math.floor(Math.random() * 91);
+        attempts++;
+      } while (usedLefts.includes(left) && attempts < 50);
+      usedLefts.push(left);
+      if (usedLefts.length > 30) usedLefts.shift();
+      return left;
+    }
+
+    // 🌸 Tạo chữ rơi
+    function createFallingTexts() {
+      textLines.forEach(line => {
+        const text = document.createElement('div');
+        text.className = 'falling glow-text';
+        text.textContent = line;
+        const duration = 10 + Math.random() * 5;
+        const delay = Math.random() * 15;
+
+        if (line.includes("text đặc biệt")) {
+          text.style.left = '50%';
+          text.style.transform = 'translateX(-50%)';
+        } else {
+          const left = getUniqueLeft();
+          text.style.left = `${left}vw`;
+        }
+
+        text.style.animationDuration = `${duration}s`;
+        text.style.animationDelay = `${delay}s`;
+        document.body.appendChild(text);
+      });
+    }
+
+    // 💕 Tạo trái tim rơi
+    function createFallingHearts() {
+      for (let i = 0; i < 40; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart falling';
+        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = `${Math.random() * 100}vw`;
+        heart.style.animationDuration = `${5 + Math.random() * 6}s`;
+        heart.style.animationDelay = `${Math.random() * 10}s`;
+        document.body.appendChild(heart);
+      }
+    }
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playButton');
+    const instructionText = document.getElementById('instructionText');
+// 💌 Hiện thư sau 25 giây
+setTimeout(() => {
+  document.getElementById('letter').style.display = 'block';
+}, 25000);
+
+
+    // 🚀 Bắt đầu khi ấn nút
+    playBtn.addEventListener('click', () => {
+      audio.play();
+      playBtn.style.display = 'none';
+      instructionText.style.display = 'none';
+      createFallingTexts();
+      createFallingHearts();
+    });
+
+    // 🌌 Nền sao
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.animationDuration = `${2 + Math.random() * 3}s`;
+      document.body.appendChild(star);
+    }
+  </script>
+
+</body>
+<!-- 📜 Bức thư -->
+<div id="letter">
+  <div class="letter-content">
+    Gửi nỡm yêu, <br><br>
+    Anh biết không, đôi khi em luôn tự hỏi rằng tại sao bản thân mình có thể may mắn đến thế khi được gặp anh vào khoảng thời gian này. À nhưng mà thật ra đôi khi em cũng thấy việc này không may mắn lắm, hì ^^. Anh biết tại sao không? Là bởi vì khi mình còn là những cô cậu học sinh cấp 3 bởi những suy nghĩ còn non nớt của mình mà ta lại làm tổn thương nhau. Là bởi vì khi còn ngồi trên ghế nhà trường, ta còn những suy nghĩ mơ hồ, ngổn ngang, những lo âu về tương lai. Em cảm thấy may mắn vì đã có anh, nhưng nhiều khi cũng cảm thấy thật tủi thân vì em và anh đã không thể gặp nhau muộn hơn - khi mà ta đã có nhiều thời gian dành cho nhau hơn ấy. Hmm... có lẽ em viết hơi khó hiểu nhỉ? Tại vì em đang viết vội trong khi anh bận làm đồ chơi cho mũn đó hì hì. Chẳng hiểu sao tự nhiên em lại nảy ra ý tưởng làm vội cái này để gửi cho anh trước khi đi ngủ nữa kkk.<br>
+    Nhưng mà dù sao, em cảm thấy vô cùng hạnh phúc khi đã có anh ở bên cạnh những tháng ngày này. Cảm ơn anh đã luôn yêu thương và chăm sóc em trong suốt thời gian qua. Anh yêu à, em không biết nên dùng ngôn từ như thế nào để diễn tả được tình cảm của mình dành cho anh. Em chỉ biết nói là em yêu anh rất nhiều, em thương anh rất nhiều!.<br>
+    Em thương anh!<br><br>
+    - Pam 🐰💗
+  </div>
+</div>
+
+</html>
