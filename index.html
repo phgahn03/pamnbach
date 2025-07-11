@@ -155,107 +155,100 @@
   <!-- 🔘 Nút Play -->
   <button id="playButton">Play</button>
 
-  <script>
-    // 💬 Chữ rơi (thay ở đây)
-    const textLines = [
-      "Em thực sự cảm thấy rất hạnh phúc khi được gặp anh",
-      "Cảm ơn anh vì đã luôn yêu thương em",
-      "Cảm ơn anh vì đã đồng hành cùng em trong một thời gian dài",
-      "Em yêu anh rất nhiều",
-      "Em thương anh rất rất rất nhiều",
-      "Em yêu anh", // Dòng ở giữa
-      "Mong rằng em sẽ luôn mạnh khỏe và hạnh phúc cùng em như bây giờ",
-      "Em sẽ luôn làm anh hạnh phúc",
-      "em pam iu pô",
-      "Em sẽ luôn yêu anh với trái tim tràn đầy tình thương và nhiệt huyết như bây giờ",
-      "Phương Anh yêu Hoàng Bách rất rất nhìuu",
-      "Em xin lỗi vì đã đôi khi nóng giận với anh",
-      "Nhưng thực sự em rất yêu anh đó",
-      "Cho dù đôi khi hai ta làm nhau đau nhưng thật may vì cả hai đã chọn ở lại và tiếp tục cố gắng",
-      "Em thực lòng mong rằng sau này em sẽ là người đứng cạnh anh trên lễ đường",
-      "Cảm ơn anh vì đã đến bên em",
+  
+<script>
+  const textLines = [
+    "Em thực sự cảm thấy rất hạnh phúc khi được gặp anh",
+    "Cảm ơn anh vì đã luôn yêu thương em",
+    "Cảm ơn anh vì đã đồng hành cùng em trong một thời gian dài",
+    "Em yêu anh rất nhiều",
+    "Em thương anh rất rất rất nhiều",
+    "Em yêu anh",
+    "Mong rằng em sẽ luôn mạnh khỏe và hạnh phúc cùng em như bây giờ",
+    "Em sẽ luôn làm anh hạnh phúc",
+    "em pam iu pô",
+    "Em sẽ luôn yêu anh với trái tim tràn đầy tình thương và nhiệt huyết như bây giờ",
+    "Phương Anh yêu Hoàng Bách rất rất nhìuu",
+    "Em xin lỗi vì đã đôi khi nóng giận với anh",
+    "Nhưng thực sự em rất yêu anh đó",
+    "Cho dù đôi khi hai ta làm nhau đau nhưng thật may vì cả hai đã chọn ở lại và tiếp tục cố gắng",
+    "Em thực lòng mong rằng sau này em sẽ là người đứng cạnh anh trên lễ đường",
+    "Cảm ơn anh vì đã đến bên em",
+  ];
 
-    ];
+  const hearts = ["💗", "💓", "💖", "💞", "💝", "❤️", "💕"];
+  const usedLefts = [];
 
-    // 💘 Trái tim
-    const hearts = ["💗", "💓", "💖", "💞", "💝", "❤️", "💕"];
-    const usedLefts = [];
+  function getUniqueLeft() {
+    let left, attempts = 0;
+    do {
+      left = Math.floor(Math.random() * 91);
+      attempts++;
+    } while (usedLefts.includes(left) && attempts < 50);
+    usedLefts.push(left);
+    if (usedLefts.length > 30) usedLefts.shift();
+    return left;
+  }
 
-    // 📍 Vị trí rơi không trùng nhau
-    function getUniqueLeft() {
-      let left, attempts = 0;
-      do {
-        left = Math.floor(Math.random() * 91);
-        attempts++;
-      } while (usedLefts.includes(left) && attempts < 50);
-      usedLefts.push(left);
-      if (usedLefts.length > 30) usedLefts.shift();
-      return left;
-    }
+  function createFallingTexts() {
+    let totalDelay = 0;
+    const duration = 12;
+    const delayStep = 3;
 
-    // 🌸 Tạo chữ rơi
-    function createFallingTexts() {
-      textLines.forEach(line => {
-        const text = document.createElement('div');
-        text.className = 'falling glow-text';
-        text.textContent = line;
-        const duration = 10 + Math.random() * 5;
-        const delay = Math.random() * 15;
+    textLines.forEach((line, index) => {
+      const text = document.createElement('div');
+      text.className = 'falling glow-text';
+      text.textContent = line;
 
-        if (line.includes("text đặc biệt")) {
-          text.style.left = '50%';
-          text.style.transform = 'translateX(-50%)';
-        } else {
-          const left = getUniqueLeft();
-          text.style.left = `${left}vw`;
-        }
-
-        text.style.animationDuration = `${duration}s`;
-        text.style.animationDelay = `${delay}s`;
-        document.body.appendChild(text);
-      });
-    }
-
-    // 💕 Tạo trái tim rơi
-    function createFallingHearts() {
-      for (let i = 0; i < 40; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart falling';
-        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-        heart.style.left = `${Math.random() * 100}vw`;
-        heart.style.animationDuration = `${5 + Math.random() * 6}s`;
-        heart.style.animationDelay = `${Math.random() * 10}s`;
-        document.body.appendChild(heart);
-      }
-    }
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playButton');
-    const instructionText = document.getElementById('instructionText');
-// 💌 Hiện thư sau 25 giây
-setTimeout(() => {
-  document.getElementById('letter').style.display = 'block';
-}, 25000);
-
-
-    // 🚀 Bắt đầu khi ấn nút
-    playBtn.addEventListener('click', () => {
-      audio.play();
-      playBtn.style.display = 'none';
-      instructionText.style.display = 'none';
-      createFallingTexts();
-      createFallingHearts();
+      const delay = index * delayStep;
+      const left = getUniqueLeft();
+      text.style.left = `${left}vw`;
+      text.style.animationDuration = `${duration}s`;
+      text.style.animationDelay = `${delay}s`;
+      document.body.appendChild(text);
     });
+ const totalTime = textLines.length * delayStep + duration;
+  setTimeout(() => {
+    document.getElementById('letter').style.display = 'block';
+  }, totalTime * 1000);
+}
 
-    // 🌌 Nền sao
-    for (let i = 0; i < 150; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.top = `${Math.random() * 100}vh`;
-      star.style.left = `${Math.random() * 100}vw`;
-      star.style.animationDuration = `${2 + Math.random() * 3}s`;
-      document.body.appendChild(star);
+
+  function createFallingHearts() {
+    for (let i = 0; i < 40; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart falling';
+      heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.animationDuration = `${5 + Math.random() * 6}s`;
+      heart.style.animationDelay = `${Math.random() * 10}s`;
+      document.body.appendChild(heart);
     }
-  </script>
+  }
+
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playButton');
+  const instructionText = document.getElementById('instructionText');
+
+  playBtn.addEventListener('click', () => {
+    audio.play();
+    playBtn.style.display = 'none';
+    instructionText.style.display = 'none';
+    createFallingTexts();
+    createFallingHearts();
+  });
+
+  for (let i = 0; i < 150; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.top = `${Math.random() * 100}vh`;
+    star.style.left = `${Math.random() * 100}vw`;
+    star.style.animationDuration = `${2 + Math.random() * 3}s`;
+    document.body.appendChild(star);
+  }
+</script>
+
+
 
 </body>
 <!-- 📜 Bức thư -->
